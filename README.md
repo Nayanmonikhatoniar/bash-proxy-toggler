@@ -1,35 +1,60 @@
-# bash-proxy-toggler
-# bash-proxy-toggler
+# wsl-proxy-switcher
 
-A **minimal proxy toggle script for Bash users on WSL Debian 12** (and other Linux systems), providing simple commands to enable or disable internet proxy environment variables manually.
+Minimal, manual proxy toggle script for **Bash** users on **WSL Debian 12**.
 
-## Key Features
+## Features
 
-- **Simple Bash functions** to enable or disable HTTP, HTTPS, FTP, and SOCKS proxies.
-- **No dependencies or daemons**: just a straightforward script you source in your shell.
-- Designed specifically for **WSL Debian 12 users**, but works on any Bash shell.
-- **Manual toggling** due to WSL limitations (no network SSID detection).
-- Includes an example snippet to easily source the script in your `.bashrc`.
-- Instructions for preserving proxy in `sudo` sessions and `apt` configuration.
+- Simple `enable_proxy` and `disable_proxy` functions to set/unset proxy environment variables.
+- No automatic network detection (WSL limitation).
+- Easy to integrate and customize.
+- Works in Bash shells on WSL only.
 
-## Why Use a Proxy?
+## Usage
 
-A proxy acts as an intermediary between your computer and the internet, helping you:
+1. Save `proxy.sh` in `~/.config/`:
 
-- Hide your real IP address.
-- Access internet resources through a controlled network.
-- Work behind corporate or school firewalls.
+    ```
+    enable_proxy() {
+        export http_proxy="http://your.proxy.host:8080"
+        export https_proxy="http://your.proxy.host:8080"
+        export ftp_proxy="http://your.proxy.host:8080"
+        export all_proxy="socks5://your.proxy.host:1080"
+        export no_proxy="localhost,127.0.0.1,::1"
+        echo "Proxy enabled"
+    }
 
-## How This Script Works
+    disable_proxy() {
+        unset http_proxy
+        unset https_proxy
+        unset ftp_proxy
+        unset all_proxy
+        unset no_proxy
+        echo "Proxy disabled"
+    }
+    ```
 
-This repo provides two functions inside the `proxy.sh` script:
+2. Source the script in your `~/.bashrc`:
 
-- `enable_proxy`: sets environment variables `http_proxy`, `https_proxy`, `ftp_proxy`, and `all_proxy` with your proxy server’s address.
-- `disable_proxy`: unsets those variables, disabling proxy use.
+    ```
+    source ~/.config/proxy.sh
+    ```
 
-Since WSL does not expose your Windows network info or SSID, **proxy toggling must be done manually** by running these commands.
+3. Reload your shell or run:
 
-## Getting Started
+    ```
+    source ~/.bashrc
+    ```
 
-### 1. Clone This Repository
+4. Use the commands:
+
+    ```
+    enable_proxy   # to activate proxy
+    disable_proxy  # to deactivate proxy
+    ```
+
+## Notes
+
+- Replace `your.proxy.host` and ports with your actual proxy details.
+- Proxy toggling is manual; no automatic network detection in WSL.
+- Proxy variables affect only the Bash environment on WSL.
 
